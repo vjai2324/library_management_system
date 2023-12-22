@@ -1,0 +1,52 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="bg-trueGray-100 py-10">
+    <div class="max-w-3xl mx-auto bg-white p-8 rounded shadow-lg">
+        <h1 class="text-2xl font-semibold mb-4">Book List</h1>
+        <div class="mb-4">
+            <a href="{% url 'create_book' %}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Add Book</a>
+        </div>
+        <!-- Search Bar -->
+        <div class="mb-4">
+            <input type="text" class="border border-gray-300 rounded p-2 w-full" placeholder="Search Books">
+        </div>
+        <!-- Table -->
+        <table class="w-full border border-gray-300 rounded">
+            <thead>
+                <tr class="bg-gray-100">
+                    <th class="p-2">Index</th>
+                    <th class="p-2">Title</th>
+                    <th class="p-2">Author</th>
+                    <th class="p-2">Category</th>
+                    <th class="p-2">Publication Date</th>
+                    <th class="p-2">Description</th>
+                    <th class="p-2">ISBN</th>
+                    <th class="p-2">Language</th>
+                    <th class="p-2">Dealer</th>
+                    <th class="p-2">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for book in books %}
+                <tr class="border-b border-gray-300">
+                    <td class="p-2">{{ forloop.counter }}</td>
+                    <td class="p-2">{{ book.title }}</td>
+                    <td class="p-2">{{ book.author }}</td>
+                    <td class="p-2">{{ book.category }}</td>
+                    <td class="p-2">{{ book.pub_date }}</td>
+                    <td class="p-2">{{ book.description }}</td>
+                    <td class="p-2">{{ book.isbn_no }}</td>
+                    <td class="p-2">{{ book.language }}</td>
+                    <td class="p-2">{{ book.bookDealer.Name }}</td>
+                    <td class="p-2">
+                        <button class="edit-book bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">Edit</button>
+                        <button class="delete-book bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">Delete</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

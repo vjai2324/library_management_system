@@ -1,0 +1,38 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="container mx-auto p-4">
+    <h1 class="text-2xl font-semibold mb-4">Create New Dealer</h1>
+    <form method="post" action="{% url 'create_dealer' %}">
+        {% csrf_token %}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            <div class="mb-4">
+                <label for="{{ form.Name.id_for_label }}" class="block text-sm font-medium text-gray-700">Name:</label>
+                {{ form.Name }}
+            </div>
+
+            <div class="mb-4">
+                <label for="{{ form.who.id_for_label }}" class="block text-sm font-medium text-gray-700">Who:</label>
+                {{ form.who }}
+            </div>
+            <div class="mb-4">
+                <label for="{{ form.email.id_for_label }}"
+                    class="block text-sm font-medium text-gray-700">Email:</label>
+                {{ form.email }}
+            </div>
+            <div class="mb-4">
+                <label for="{{ form.status.id_for_label }}"
+                    class="block text-sm font-medium text-gray-700">Status:</label>
+                {{ form.status }}
+            </div>
+        </div>
+        <div class="mt-4">
+            <button type="submit"
+                class="px-4 py-2 bg-blue-500 text-white rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-opacity-50">
+                Create Dealer
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}

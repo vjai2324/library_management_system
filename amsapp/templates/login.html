@@ -1,0 +1,41 @@
+{% extends "index.html" %}
+{% block content %}
+ <div class="bg-trueGray-300min-h-screen flex items-center justify-center">
+     <div class="bg-slate-200 shadow-md rounded-lg p-8 w-full max-w-md mt-36">
+        <h2 class="text-2xl font-semibold mb-4 ">Login</h2>
+        <form method="POST" novalidate>
+            {% csrf_token %}
+<!--            <div class="mb-4">-->
+<!--                <label for="username" class="block text-gray-600">Username</label>-->
+<!--                <input type="text" id="username" name="username" class="border rounded px-3 py-2 w-full" required>-->
+<!--            </div>-->
+<!--            <div class="mb-4">-->
+<!--                <label for="password" class="block text-gray-600">Password</label>-->
+<!--                <input type="password" id="password" name="password" class="border rounded px-3 py-2 w-full" required>-->
+<!--            </div>-->
+
+            <div class="mb-4 gap-4">
+                <div class="relative mt-8">
+                  <input id="username" type="text" name="username" placeholder="first name" class="relative w-full h-12 px-4 placeholder-transparent transition-all border rounded-full outline-none focus-visible:outline-none peer border-slate-300 text-slate-500 autofill:bg-white invalid:border-pink-500 invalid:text-pink-500 focus:border-slate-500 focus:outline-none invalid:focus:border-pink-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"/>
+                  <label for="username" class="cursor-text peer-focus:cursor-default peer-autofill:-top-2 absolute left-2 -top-2 z-[1] px-2 text-xs text-slate-400 transition-all before:absolute before:top-0 before:left-0 before:z-[-1] before:block before:h-full before:w-full before:bg-inherit before:transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-required:after:text-pink-500 peer-required:after:content-['\00a0*'] peer-invalid:text-pink-500 peer-focus:-top-4 peer-focus:text-xs peer-focus:ml-1 peer-focus:text-slate-900 peer-invalid:peer-focus:text-pink-500 peer-disabled:cursor-not-allowed peer-disabled:text-slate-400 peer-disabled:before:bg-transparent">
+                    Username
+                  </label>
+                </div>
+                <div class="relative my-6">
+                  <input id="password" type="password" name="password" placeholder="last name" class="relative w-full h-12 px-4 placeholder-transparent transition-all border rounded-full outline-none focus-visible:outline-none peer border-slate-300 text-slate-500 autofill:bg-white invalid:border-pink-500 invalid:text-pink-500 focus:border-slate-500 focus:outline-none invalid:focus:border-pink-500 disabled:cursor-not-allowed disabled:bg-slate-50 disabled:text-slate-400"/>
+                  <label for="password" class="cursor-text peer-focus:cursor-default peer-autofill:-top-2 absolute left-2 -top-2 z-[1] px-2 text-xs text-slate-400 transition-all before:absolute before:top-0 before:left-0 before:z-[-1] before:block before:h-full before:w-full before:bg-inherit before:transition-all peer-placeholder-shown:top-3 peer-placeholder-shown:text-base peer-required:after:text-pink-500 peer-required:after:content-['\00a0*'] peer-invalid:text-pink-500 peer-focus:-top-4 peer-focus:text-xs peer-focus:ml-1 peer-focus:text-slate-900 peer-invalid:peer-focus:text-pink-500 peer-disabled:cursor-not-allowed peer-disabled:text-slate-400 peer-disabled:before:bg-transparent">
+                    Password
+                  </label>
+                </div>
+            </div>
+
+            <div class="mb-4 mt-8">
+                <button type="submit" class="bg-teal-600 hover:bg-teal-700 text-white shadow-sm rounded-full px-4 py-2">Login</button>
+            </div>
+        </form>
+        <p class="text-red-400 hover:underline"><a href="{% url 'password_reset' %}">Lost password?</a></p>
+        <p>Don't have an account? <a href="{%url 'register' %}" class="text-blue-500 hover:underline">Register</a></p>
+    </div>
+ </div>
+
+{% endblock %}

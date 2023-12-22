@@ -1,0 +1,37 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="container mx-auto py-8">
+    <h1 class="text-2xl font-semibold mb-4 text-gray-800">My Wishlist</h1>
+    <ul class="space-y-4">
+        {% for data in wishlist_data %}
+        <li class="p-4 border rounded-lg shadow-md">
+            <div class="flex items-center justify-between">
+                <div class="flex-1">
+                    <h2 class="text-xl font-semibold">{{ data.book_data.volumeInfo.title }}</h2>
+                    <p class="text-gray-600">Author: {{ data.book_data.volumeInfo.authors.0 }}</p>
+                    <p class="mt-2">
+                        <a href="{% url 'add_to_cart' data.book_data.id %}"
+                            class="inline-flex items-center px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-400">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 9v7m0 0 3-3m-3 3-3-3m3 3 3-3m0 0 0-7"></path>
+                            </svg>
+                            Add to Cart
+                        </a>
+                    </p>
+
+                </div>
+                <div class="w-24">
+                    <img src="{{ data.book_data.volumeInfo.imageLinks.thumbnail }}"
+                        alt="{{ data.book_data.volumeInfo.imageLinks.thumbnail }}"
+                        class="object-cover w-24 h-32 rounded-lg shadow">
+                </div>
+            </div>
+            <p class="text-sm text-gray-500 mt-4">Added on: {{ data.item.added_at }}</p>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

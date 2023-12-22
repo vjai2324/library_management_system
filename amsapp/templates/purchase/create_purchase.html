@@ -1,0 +1,80 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="bg-trueGray-100 py-10">
+    <div class="max-w-3xl mx-auto bg-white p-8 rounded shadow-lg">
+        <h1 class="text-2xl font-semibold mb-4">Create Purchase</h1>
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Book Title</label>
+                    <select name="book_title" class="mt-1 p-2 w-full rounded border border-gray-300">
+                        <option value="" disabled selected>Select Book Title</option>
+                        {% for book in books %}
+                        <option value="{{ book.book_id }}">{{ book.title }}</option>
+                        {% endfor %}
+                    </select>
+                    <small class="text-red-500">{{ form.errors.book_title }}</small>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Author</label>
+                    <select name="author" class="mt-1 p-2 w-full rounded border border-gray-300">
+                        <option value="" disabled selected>Select Author</option>
+                        {% for book in books %}
+                        <option value="{{ book.book_id }}">{{ book.author }}</option>
+                        {% endfor %}
+                    </select>
+                    <small class="text-red-500">{{ form.errors.author }}</small>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Dealer</label>
+                    <select name="dealers" class="mt-1 p-2 w-full rounded border border-gray-300">
+                        <option value="" disabled selected>Select Dealer</option>
+                        {% for dealer in dealers %}
+                        <option value="{{ dealer.dealers_id }}">{{ dealer.Name }}</option>
+                        {% endfor %}
+                    </select>
+                    <small class="text-red-500">{{ form.errors.dealers }}</small>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700">Order Date</label>
+                    <input type="date" name="orderdate" class="mt-1 p-2 w-full rounded border border-gray-300">
+                    <small class="text-red-500">{{ form.errors.orderdate }}</small>
+                </div>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Book Quantity</label>
+                <input type="number" name="bookquantity" class="mt-1 p-2 w-full rounded border border-gray-300">
+                <small class="text-red-500">{{ form.errors.bookquantity }}</small>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Book Publication Date</label>
+                <input type="date" name="get_book_pub_date" class="mt-1 p-2 w-full rounded border border-gray-300">
+                <small class="text-red-500">{{ form.errors.get_book_pub_date }}</small>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Per Book Price</label>
+                <input type="number" name="perbookprice" class="mt-1 p-2 w-full rounded border border-gray-300">
+                <small class="text-red-500">{{ form.errors.perbookprice }}</small>
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Payment Type</label>
+                <select name="paymenttype" class="mt-1 p-2 w-full rounded border border-gray-300">
+                    <option value="" disabled selected>Select Payment Type</option>
+                    <option value="cash">Cash</option>
+                    <option value="net-banking">Net Banking</option>
+                    <option value="UPI">UPI</option>
+                    <option value="Card">Card</option>
+                </select>
+                <small class="text-red-500">{{ form.errors.paymenttype }}</small>
+            </div>
+            <div>
+                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Create Purchase</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

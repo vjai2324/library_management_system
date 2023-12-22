@@ -1,0 +1,44 @@
+{% extends "index.html" %}
+{% block content %}
+
+<div class="p-4">
+    <h2 class="text-2xl font-semibold mb-4">Users Detail</h2>
+
+    <form method="GET" action="{% url 'user_details' %}">
+        <div class="mb-4">
+            <input type="text" name="query" placeholder="Search by username" value="{{ query }}">
+            <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full">Search</button>
+        </div>
+    </form>
+
+
+   <div class="overflow-x-auto">
+        <table class="min-w-full table-auto border border-gray-300 rounded-lg shadow-lg">
+            <!-- Table Header -->
+            <thead class="bg-blue-500 text-white">
+                <tr>
+                    <th class="px-4 py-2">Id</th>
+                    <th class="px-4 py-2">User Name</th>
+                    <th class="px-4 py-2">E-mail</th>
+                    <th class="px-4 py-2">First Name</th>
+                    <th class="px-4 py-2">Last Name</th>
+                    <th class="px-4 py-2">Date Joined</th>
+                </tr>
+            </thead>
+            <!-- Table Body -->
+            <tbody>
+                {% for user in users %}
+                <tr class="hover:bg-gray-100">
+                    <td class="border px-4 py-2">{{ user.id }}</td>
+                    <td class="border px-4 py-2">{{ user.username }}</td>
+                    <td class="border px-4 py-2">{{ user.email }}</td>
+                    <td class="border px-4 py-2">{{ user.first_name }}</td>
+                    <td class="border px-4 py-2">{{ user.last_name }}</td>
+                    <td class="border px-4 py-2">{{ user.date_joined|date:"F d, Y" }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}

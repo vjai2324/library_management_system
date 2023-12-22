@@ -1,0 +1,104 @@
+<!-- book_form.html -->
+{% extends "index.html" %}
+
+{% block content %}
+<div class="container mx-auto p-4">
+    <h1 class="text-2xl font-semibold mb-4">Add a New Book</h1>
+    <form method="post" enctype="multipart/form-data" class="max-w-lg mx-auto">
+    {% csrf_token %}
+
+    <div class="mb-4">
+        <label for="{{ form.title.id_for_label }}" class="block text-sm font-medium text-gray-700">Title:</label>
+        {{ form.title }}
+        {% if form.title.errors %}
+        <p class="text-red-500 text-xs italic">{{ form.title.errors.0 }}</p>
+        {% endif %}
+    </div>
+
+    <div class="mb-4">
+        <label for="{{ form.subtitle.id_for_label }}" class="block text-sm font-medium text-gray-700">Subtitle:</label>
+        {{ form.subtitle }}
+        {% if form.subtitle.errors %}
+        <p class="text-red-500 text-xs italic">{{ form.subtitle.errors.0 }}</p>
+        {% endif %}
+    </div>
+
+    <div class="mb-4">
+        <label for="{{ form.author.id_for_label }}" class="block text-sm font-medium text-gray-700">Author:</label>
+        {{ form.author }}
+        {% if form.author.errors %}
+        <p class="text-red-500 text-xs italic">{{ form.author.errors.0 }}</p>
+        {% endif %}
+    </div>
+
+    <div class="mb-4">
+        <label for="{{ form.category.id_for_label }}" class="block text-sm font-medium text-gray-700">Category:</label>
+        {{ form.category }}
+        {% if form.category.errors %}
+        <p class="text-red-500 text-xs italic">{{ form.category.errors.0 }}</p>
+        {% endif %}
+    </div>
+
+    <div class="mb-4">
+        <label for="{{ form.pub_date.id_for_label }}" class="block text-sm font-medium text-gray-700">Publication Date:</label>
+        {{ form.pub_date }}
+        {% if form.pub_date.errors %}
+        <p class="text-red-500 text-xs italic">{{ form.pub_date.errors.0 }}</p>
+        {% endif %}
+    </div>
+
+    <div class="mb-4">
+        <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-700">Description:</label>
+        {{ form.description }}
+        {% if form.description.errors %}
+        <p class="text-red-500 text-xs italic">{{ form.description.errors.0 }}</p>
+        {% endif %}
+    </div>
+
+    <div class="mb-4">
+        <label for="{{ form.isbn_no.id_for_label }}" class="block text-sm font-medium text-gray-700">ISBN Number:</label>
+        {{ form.isbn_no }}
+        {% if form.isbn_no.errors %}
+        <p class="text-red-500 text-xs italic">ISBN number must be unique</p>
+        {% endif %}
+    </div>
+
+    <div class="mb-4">
+        <label for="{{ form.pages.id_for_label }}" class="block text-sm font-medium text-gray-700">Number of Pages:</label>
+        {{ form.pages }}
+        {% if form.pages.errors %}
+        <p class="text-red-500 text-xs italic">Page Number required</p>
+        {% endif %}
+    </div>
+
+    <div class="mb-4">
+        <label for="{{ form.image.id_for_label }}" class="block text-sm font-medium text-gray-700">Book Cover Image:</label>
+        {{ form.image }}
+        {% if form.image.errors %}
+        <p class="text-red-500 text-xs italic">{{ form.image.errors.0 }}</p>
+        {% endif %}
+    </div>
+
+    <div class="mb-4">
+        <label for="{{ form.language.id_for_label }}" class="block text-sm font-medium text-gray-700">Language:</label>
+        {{ form.language }}
+        {% if form.language.errors %}
+        <p class="text-red-500 text-xs italic">{{ form.language.errors.0 }}</p>
+        {% endif %}
+    </div>
+
+    <div class="mb-4">
+        <label for="{{ form.bookDealer.id_for_label }}" class="block text-sm font-medium text-gray-700">Book Dealer:</label>
+        {{ form.bookDealer }}
+        {% if form.bookDealer.errors %}
+        <p class="text-red-500 text-xs italic">{{ form.bookDealer.errors.0 }}</p>
+        {% endif %}
+    </div>
+
+    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+        Submit
+    </button>
+</form>
+
+</div>
+{% endblock %}

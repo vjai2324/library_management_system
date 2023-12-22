@@ -1,0 +1,13 @@
+{% extends "index.html" %}
+{% block content %}
+<div class="container mx-auto py-6">
+    <h1 class="text-2xl font-semibold mb-4">Bill Details</h1>
+    <p>User: {{ bill.user.username }}</p>
+    <p>Book: {{ bill.book.title }}</p>
+    <p>Issuance Date: {{ bill.issuance_date|date:"F d, Y" }}</p>
+    <p>Due Date: {{ bill.due_date|date:"F d, Y" }}</p>
+    <p>Charges: ${{ bill.charges }}</p>
+    <a href="{% url 'download_bill' bill.id %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full inline-block mt-4">Download Bill</a>
+</div>
+
+{% endblock %}

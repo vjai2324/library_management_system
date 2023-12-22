@@ -1,0 +1,312 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+
+
+
+<div class="bg-gray-100 py-10 overflow-y-scroll " id="page-container">
+  <div id="toast-success"
+    class="hidden top-0 left-0 w-full max-w-xs p-4 mb-4 text-gray-500 bg-white rounded-lg shadow dark:text-gray-400 dark:bg-gray-800"
+    role="alert">
+    <div
+      class="inline-flex items-center justify-center flex-shrink-0 w-8 h-8 text-green-500 bg-green-100 rounded-lg dark:bg-green-800 dark:text-green-200">
+      <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+        viewBox="0 0 20 20">
+        <path
+          d="M10 .5a9.5 9.5 0 1 0 9.5 9.5A9.51 9.51 0 0 0 10 .5Zm3.707 8.207-4 4a1 1 0 0 1-1.414 0l-2-2a1 1 0 0 1 1.414-1.414L9 10.586l3.293-3.293a1 1 0 0 1 1.414 1.414Z" />
+      </svg>
+      <span class="sr-only">Check icon</span>
+    </div>
+    <div class="ml-3 text-sm font-normal">Item Added successfully.</div>
+    <button type="button"
+      class="ml-auto -mx-1.5 -my-1.5 bg-white text-gray-400 hover:text-gray-900 rounded-lg focus:ring-2 focus:ring-gray-300 p-1.5 hover:bg-gray-100 inline-flex items-center justify-center h-8 w-8 dark:text-gray-500 dark:hover:text-white dark:bg-gray-800 dark:hover:bg-gray-700"
+      data-dismiss-target="#toast-success" aria-label="Close">
+      <span class="sr-only">Close</span>
+      <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+      </svg>
+    </button>
+  </div>
+  <div class="container mx-auto bg-gray-100 ">
+    <h1 class="text-3xl font-semibold mb-6 text-center heading text-gray-600">Local Library Home</h1>
+    <p class="text-gray-700 text-center text-gray-600">
+      Welcome to LocalLibrary
+    </p>
+    <h2 class="text-2xl  mt-6 text-center heading text-gray-600">Dynamic Content</h2>
+    <p class="text-gray-700 text-center text-gray-600">
+      The library has the following records:
+    </p>
+
+    <div
+      class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20 dark-mode:bg-dark-bg"
+      id="book-list">
+      <div class="grid gap-8 lg:grid-cols-3 sm:max-w-sm sm:mx-auto lg:max-w-full">
+        {% for item in data.items %}
+        <div class="overflow-hidden transition-shadow duration-300 bg-white rounded shadow-sm">
+          <img src="{{ item.volumeInfo.imageLinks.thumbnail }}" class="object-cover w-full h-64"
+            alt="{{ item.volumeInfo.title }}" />
+          <div class="p-5 border border-t-0">
+            <!-- Add a unique class to the details button -->
+            <button
+              class="details-btn inline-block rounded-full bg-info px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-black shadow-[0_4px_9px_-4px_#54b4d3] transition duration-150 ease-in-out hover:bg-info-600 hover:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.3),0_4px_18px_0_rgba(84,180,211,0.2)] focus:bg-info-600 focus:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.3),0_4px_18px_0_rgba(84,180,211,0.2)] focus:outline-none focus:ring-0 active:bg-info-700 active:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.3),0_4px_18px_0_rgba(84,180,211,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(84,180,211,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.2),0_4px_18px_0_rgba(84,180,211,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.2),0_4px_18px_0_rgba(84,180,211,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.2),0_4px_18px_0_rgba(84,180,211,0.1)]"
+              data-book-details="{{ item.id }}">Preview</button>
+            <!-- Other content here -->
+
+            <!-- Add a hidden modal for each book -->
+            <div class="modal fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 hidden scroll-auto"
+              data-modal="{{ item.id }}">
+              <div
+                class="modal__content absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-md max-h-screen overflow-y-auto">
+                <!-- Close button in the middle of the modal -->
+                <button class="modal__close absolute top-0 right-0 p-2 text-xl cursor-pointer">&#10005;</button>
+                <!-- Add detailed book information here -->
+                <h2 class="text-2xl font-bold mb-4">{{ item.volumeInfo.title }}</h2>
+                <p class="text-gray-700 mb-4"><span class="font-bold">Author: </span>{{ item.volumeInfo.authors.0 }}</p>
+                <p class="text-gray-700"><span class="font-bold">Description:</span> {{ item.volumeInfo.description }}
+                </p>
+                <p class="text-gray-700"><span class="font-bold">Categories :</span> {{ item.volumeInfo.categories.0 }}
+                </p>
+                <p class="text-gray-700"><span class="font-bold">Language :</span> {{ item.volumeInfo.language }}</p>
+                <p class="text-gray-700"><span class="font-bold">Publisher :</span> {{ item.volumeInfo.publisher }}</p>
+                <p class="text-gray-700"><span class="font-bold">ISBN :</span> {{
+                  item.volumeInfo.industryIdentifiers.0.identifier }}</p>
+                <!-- Add other details as needed -->
+
+
+
+              </div>
+            </div>
+
+          </div>
+          <div class="p-5 border border-t-0">
+            <p class="mb-3 text-xs font-semibold tracking-wide uppercase">
+              <a href="/" class="transition-colors duration-200 text-blue-gray-900 hover:text-deep-purple-accent-700"
+                aria-label="Category" title="Author">Author</a>
+              <span class="text-gray-600">— {{ item.volumeInfo.authors.0}}</span>
+            </p>
+            <a href="/" aria-label="title" title="{{ item.volumeInfo.title }}"
+              class="inline-block mb-3 text-2xl font-bold leading-5 transition-colors duration-200 hover:text-deep-purple-accent-700 line-clamp-2">
+              {{ item.volumeInfo.title | truncatewords:10}}
+            </a>
+            <p class="mb-2 text-gray-700 line-clamp-4">
+              {% if item.volumeInfo.description|length > 30 %}
+              {{ item.volumeInfo.description | truncatechars:50 }}...
+              {% else %}
+              {{ item.volumeInfo.description }}
+              {% endif %}
+            </p>
+
+            <div class="inline-flex ">
+              <a href="{% url 'add_to_cart' item.id %}" aria-label="" class=""><button
+                  class="inline-flex items-center justify-center h-12 gap-2 px-6 mx-3 text-sm font-medium tracking-wide text-white transition duration-300 rounded shadow-lg focus-visible:outline-none whitespace-nowrap bg-emerald-500 shadow-emerald-200 hover:bg-emerald-600 hover:shadow-md hover:shadow-emerald-200 focus:bg-emerald-700 focus:shadow-md focus:shadow-emerald-200 disabled:cursor-not-allowed disabled:border-emerald-300 disabled:bg-emerald-300 disabled:shadow-none"><span>Add
+                    To Cart</span></button></a>
+
+              <form method="POST" class="wishlist-form" data-book-id="{{ item.id }}" novalidate>
+                {% csrf_token %}
+                <input type="hidden" name="book_isbn" value="{{ item.volumeInfo.industryIdentifiers.0.identifier }}">
+                <button
+                  class="add-to-wishlist-button inline-flex items-center justify-center h-12 gap-2 px-6 text-sm font-medium tracking-wide text-white transition duration-300 rounded shadow-lg focus-visible:outline-none whitespace-nowrap bg-emerald-500 shadow-emerald-200 hover:bg-emerald-600 hover:shadow-md hover:shadow-emerald-200 focus:bg-emerald-700 focus:shadow-md focus:shadow-emerald-200 disabled:cursor-not-allowed disabled:border-emerald-300 disabled:bg-emerald-300 disabled:shadow-none"
+                  type="button"><span>Add
+                    to Wishlist</span></button>
+              </form>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+
+      <!-- Component: Large primary elevated button -->
+
+      <!-- End Large primary elevated button -->
+
+
+      <div class="text-center mt-4">
+        <button id="load-more-button" data-next-page="{% url 'fetch_more_data' %}?offset=1"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full text-center transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-md">
+          Load More
+        </button>
+        <div id="loading-spinner" style="display: none;">
+          <div class="spinner"></div>
+          Loading...
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <script>
+    function toggleDescription(button) {
+      const description = button.previousElementSibling;
+      const hiddenDescription = button.nextElementSibling;
+
+      description.classList.toggle('hidden');
+      hiddenDescription.classList.toggle('hidden');
+
+      if (button.textContent === 'Read More') {
+        button.textContent = 'Read Less';
+      } else {
+        button.textContent = 'Read More';
+      }
+    }
+    const loadMoreButton = document.getElementById('load-more-button');
+    const bookList = document.getElementById('book-list');
+    const loadingSpinner = document.getElementById('loading-spinner');
+    let loading = false; // Flag to prevent multiple simultaneous requests
+    let nextPage = loadMoreButton.getAttribute('data-next-page');
+
+    if (loadMoreButton) {
+      window.addEventListener('scroll', () => {
+        const scrollY = window.scrollY;
+        const windowHeight = window.innerHeight;
+        const documentHeight = document.documentElement.scrollHeight;
+
+        // Define a threshold for triggering the load more action
+        const threshold = 200;
+
+        if (!loading && scrollY + windowHeight >= documentHeight - threshold) {
+          // User has scrolled to the bottom, trigger loading more content
+          loadMore();
+        }
+      });
+
+      loadMoreButton.addEventListener('click', () => {
+        if (!loading) {
+          loadMore();
+        }
+      });
+    }
+
+    function loadMore() {
+      if (nextPage && !loading) {
+        loading = true;
+        loadingSpinner.style.display = 'block';
+
+        fetch(nextPage)
+          .then(response => {
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return response.json();
+          })
+          .then(data => {
+            const items = data.data.items;
+
+            if (items && items.length > 0) {
+              let html = '';
+              items.forEach(item => {
+                thumbnail = item.volumeInfo.imageLinks.thumbnail;
+                html += ' <div class="overflow-hidden transition-shadow duration-300 bg-white rounded shadow-sm"><img src="{{ item.volumeInfo.imageLinks.thumbnail }}" class="object-cover w-full h-64"alt="{{ item.volumeInfo.title }}" /><div class="p-5 border border-t-0"><button class="details-btn inline-block rounded-full bg-info px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-black shadow-[0_4px_9px_-4px_#54b4d3] transition duration-150 ease-in-out hover:bg-info-600 hover:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.3),0_4px_18px_0_rgba(84,180,211,0.2)] focus:bg-info-600 focus:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.3),0_4px_18px_0_rgba(84,180,211,0.2)] focus:outline-none focus:ring-0 active:bg-info-700 active:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.3),0_4px_18px_0_rgba(84,180,211,0.2)] dark:shadow-[0_4px_9px_-4px_rgba(84,180,211,0.5)] dark:hover:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.2),0_4px_18px_0_rgba(84,180,211,0.1)] dark:focus:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.2),0_4px_18px_0_rgba(84,180,211,0.1)] dark:active:shadow-[0_8px_9px_-4px_rgba(84,180,211,0.2),0_4px_18px_0_rgba(84,180,211,0.1)]" data-book-details="{{ item.id }}">Preview</button> <div class="modal fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 hidden scroll-auto" data-modal="{{ item.id }}"> <div class="modal__content absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white p-8 rounded-md max-h-screen overflow-y-auto"><button class="modal__close absolute top-0 right-0 p-2 text-xl cursor-pointer">&#10005;</button><h2 class="text-2xl font-bold mb-4">{{ item.volumeInfo.title }}</h2><p class="text-gray-700 mb-4"><span class="font-bold">Author: </span>{{ item.volumeInfo.authors.0 }}</p><p class="text-gray-700"><span class="font-bold">Description:</span> {{ item.volumeInfo.description }}</p><p class="text-gray-700"><span class="font-bold">Categories :</span> {{ item.volumeInfo.categories.0 }}</p><p class="text-gray-700"><span class="font-bold">Language :</span> {{ item.volumeInfo.language }}</p><p class="text-gray-700"><span class="font-bold">Publisher :</span> {{ item.volumeInfo.publisher }}</p><p class="text-gray-700"><span class="font-bold">ISBN :</span> {{ item.volumeInfo.industryIdentifiers.0.identifier }}</p></div></div></div><div class="p-5 border border-t-0"><p class="mb-3 text-xs font-semibold tracking-wide uppercase"><a href="/" class="transition-colors duration-200 text-blue-gray-900 hover:text-deep-purple-accent-700"aria-label="Category" title="Author">Author</a><span class="text-gray-600">— {{ item.volumeInfo.authors.0}}</span></p><a href="/" aria-label="title" title="{{ item.volumeInfo.title }}"class="inline-block mb-3 text-2xl font-bold leading-5 transition-colors duration-200 hover:text-deep-purple-accent-700 line-clamp-2">{{ item.volumeInfo.title | truncatewords:10}}</a><p class="mb-2 text-gray-700 line-clamp-4">{% if item.volumeInfo.description|length > 30 %}{{ item.volumeInfo.description | truncatechars:50 }} ... {% else %} {{ item.volumeInfo.description }} {% endif %}</p><div class="inline-flex "><a href="/amsapp/add_to_cart/${item.id}/" aria-label="" class=""><button class="inline-flex items-center justify-center h-12 gap-2 px-6 mx-3 text-sm font-medium tracking-wide text-white transition duration-300 rounded shadow-lg focus-visible:outline-none whitespace-nowrap bg-emerald-500 shadow-emerald-200 hover:bg-emerald-600 hover:shadow-md hover:shadow-emerald-200 focus:bg-emerald-700 focus:shadow-md focus:shadow-emerald-200 disabled:cursor-not-allowed disabled:border-emerald-300 disabled:bg-emerald-300 disabled:shadow-none"><span>Add To Cart</span></button></a> <form method="POST" class="wishlist-form" data-book-id="{{ item.id }}" novalidate> {% csrf_token %} <input type="hidden" name="book_isbn" value="{{ item.volumeInfo.industryIdentifiers.0.identifier }}"><buttonclass="add-to-wishlist-button inline-flex items-center justify-center h-12 gap-2 px-6 text-sm font-medium tracking-wide text-white transition duration-300 rounded shadow-lg focus-visible:outline-none whitespace-nowrap bg-emerald-500 shadow-emerald-200 hover:bg-emerald-600 hover:shadow-md hover:shadow-emerald-200 focus:bg-emerald-700 focus:shadow-md focus:shadow-emerald-200 disabled:cursor-not-allowed disabled:border-emerald-300 disabled:bg-emerald-300 disabled:shadow-none"type="button"><span>Add to Wishlist</span></buttonclass=></form></div></div></div>';
+                // Append the HTML string to the container
+                const cardList = document.querySelector('.grid'); // Update this selector with the actual container element
+                cardList.innerHTML += html;
+              });
+
+
+              // Update the "Load More" button's data-next-page attribute
+              const offset = parseInt(nextPage.split('=')[1]);
+              loadMoreButton.setAttribute('data-next-page', `/fetch-more-data/?offset=${offset + 1}`);
+            } else {
+              // No more data to load, hide the "Load More" button
+              loadMoreButton.style.display = 'none';
+            }
+          })
+          .catch(error => {
+            console.error('Error fetching or parsing data:', error);
+          })
+          .finally(() => {
+            loading = false;
+            loadingSpinner.style.display = 'none';
+          });
+      }
+    }
+    // JavaScript code
+    document.addEventListener('DOMContentLoaded', function () {
+      const wishlistForms = document.querySelectorAll('.wishlist-form');
+
+      wishlistForms.forEach((form) => {
+        const addToWishlistButton = form.querySelector('.add-to-wishlist-button');
+        const bookId = form.dataset.bookId;
+        const book_isbn = form.dataset.book_isbn;
+        const notification = document.getElementById('toast-success');
+        const bookIdInput = form.querySelector('[name="book_id"]');
+
+        const bookIsbnInput = form.querySelector('[name="book_isbn"]');
+        const bookIsbnValue = bookIsbnInput.value;
+
+
+        addToWishlistButton.addEventListener('click', (event) => {
+          event.preventDefault();
+          const formData = new FormData();
+          console.log(formData);
+          formData.append('book_id', bookId);
+          formData.append('book_isbn', bookIsbnValue);
+
+          // Send an AJAX POST request to the server
+          fetch(`/amsapp/add_to_wishlist/${bookId}/`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+              'X-CSRFToken': getCookie('csrftoken'), // Ensure you have a function to get the CSRF token
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              // Handle the response (e.g., show a success message)
+              notification.classList.remove('hidden');
+              // Clear the notification after a few seconds (optional)
+              setTimeout(() => {
+                notification.classList.add('hidden');
+              }, 3000); // Adjust the time as needed
+              console.log(data.message);
+            })
+            .catch((error) => {
+              // Handle errors
+              console.error(error);
+            });
+        });
+      });
+    });
+
+
+    function getCookie(name) {
+      let cookieValue = null; // Use 'let' instead of 'const'
+      if (document.cookie && document.cookie !== '') {
+        const cookies = document.cookie.split(';');
+        for (let i = 0; i < cookies.length; i++) {
+          const cookie = cookies[i].trim();
+          // Check if the cookie contains the desired name
+          if (cookie.substring(0, name.length + 1) === name + '=') {
+            // Extract and return the cookie value
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+      const detailsButtons = document.querySelectorAll(".details-btn");
+
+      detailsButtons.forEach(button => {
+        const bookId = button.getAttribute("data-book-details");
+        const modal = document.querySelector(`[data-modal="${bookId}"]`);
+
+        // Open modal when the details button is clicked
+        button.addEventListener("click", function () {
+          modal.style.display = "flex";
+        });
+
+        // Close modal when the close button is clicked
+        const closeButton = modal.querySelector(".modal__close");
+        closeButton.addEventListener("click", function () {
+          modal.style.display = "none";
+        });
+      });
+    });
+
+
+
+  </script>
+  {% endblock %}

@@ -1,0 +1,13 @@
+<!-- create_bookstock.html -->
+
+{% extends "index.html" %}
+
+{% block content %}
+<h2>Create Book Stock</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Create</button>
+</form>
+<a href="{% url 'bookstock_list' %}">Back to List</a>
+{% endblock %}

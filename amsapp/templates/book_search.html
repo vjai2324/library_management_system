@@ -1,0 +1,78 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="container mx-auto p-4">
+    <h1 class="text-3xl font-semibold mb-4">Search Product by Categories and More Filters</h1>
+
+    <!-- Search Form with Filters -->
+    <form method="get" class="mb-4">
+        <div class="flex flex-col md:flex-row shadow">
+<!--        {{ form.as_p }}-->
+
+            <input type="text" class="flex-shrink-0 z-10 inline-flex items-center mr-4 text-md font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-xl hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600 z-10  bg-teal divide-y divide-gray-100 rounded-lg dark:bg-gray-700" name="author" placeholder="Author">
+<!--                {{ form.author }}-->
+            </input>
+
+            <input type="text" class="flex-shrink-0 z-10 inline-flex items-center mx-4 text-md font-medium text-center text-gray-900 bg-gray-100 border border-gray-300 rounded-xl hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600 z-10  bg-teal divide-y divide-gray-100 rounded-lg dark:bg-gray-700" name="publication_year" placeholder="Publication Year">
+
+            </input>
+
+                <div class="flex-shrink-0 z-10 inline-flex items-center ml-4 text-md font-medium text-center text-gray-900 bg-gray-100 border border-gray-300  hover:bg-gray-200 focus:ring-4 focus:outline-none focus:ring-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:ring-gray-700 dark:text-white dark:border-gray-600 z-10  bg-teal divide-y divide-gray-100 rounded-s-lg shadow dark:bg-gray-700">{{ form.category }}</div>
+                <div class="relative w-full">
+                    <input type="search" name="query" id="search-dropdown" class="block p-2.5 w-full z-20 text-md text-gray-900 bg-gray-100 rounded-e-lg border-l-gray-50 border-l-2 border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-l-gray-700  dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:border-blue-500" placeholder="Search Authors, Books, Publications etc...">
+                    <button type="submit" class="absolute top-0 right-0 p-2.5 text-md font-medium h-full text-white bg-blue-700 rounded-r-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                        </svg>
+                        <span class="sr-only">Search</span>
+                    </button>
+                </div>
+        </div>
+    </form>
+
+    <!-- Display Search Results -->
+    <h2 class="text-2xl font-semibold mb-2">Search Results</h2>
+    <ul id="searchResults" class="space-y-4">
+        {% if data.items %}
+        {% for item in data.items %}
+        <li class="border rounded-lg overflow-hidden shadow-md hover:shadow-xl transition duration-300">
+            <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4 p-4">
+                <div class="md:w-1/4">
+                    <img src="{{ item.volumeInfo.imageLinks.thumbnail }}" alt="Book Cover" class="w-full h-auto">
+                </div>
+                <div class="md:w-3/4">
+                    <h3 class="text-xl font-semibold">{{ item.volumeInfo.title }}</h3>
+                    <p class="text-gray-600">Authors: {{ item.volumeInfo.authors|join:", " }}</p>
+                    <p class="text-gray-600">Category: {{ item.volumeInfo.categories|join:", " }}</p>
+                    <p class="text-gray-600">Published Year: {{ item.volumeInfo.publishedDate }}</p>
+                    <p class="text-gray-600 line-clamp-4">Description: {{ item.volumeInfo.description|default:"Not available" }}</p>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+        {% else %}
+        <li class="text-gray-600">No results found.</li>
+        {% endif %}
+    </ul>
+</div>
+
+<script>
+    // JavaScript for toggling the description on "Read More" button click
+    function toggleDescription(button) {
+        const description = button.parentElement.querySelector('.hidden');
+        if (description) {
+            description.classList.toggle('hidden');
+            button.textContent = description.classList.contains('hidden') ? 'Read More' : 'Read Less';
+        }
+    }
+
+    // Add event listeners to all "Read More" buttons
+    const readMoreButtons = document.querySelectorAll('.toggle-description');
+    readMoreButtons.forEach((button) => {
+        button.addEventListener('click', () => {
+            toggleDescription(button);
+        });
+    });
+</script>
+
+{% endblock %}

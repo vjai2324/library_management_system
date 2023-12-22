@@ -1,0 +1,42 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="bg-trueGray-100 py-10">
+    <div class="max-w-3xl mx-auto bg-white p-8 rounded shadow-lg">
+        <h1 class="text-2xl font-semibold mb-4">Purchase List</h1>
+        <div class="mb-4">
+            <a href="{% url 'create_purchase' %}" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Purchase Book</a>
+        </div>
+        <table class="min-w-full border border-gray-300">
+            <thead>
+                <tr>
+                    <th class="p-2">Index</th>
+                    <th class="py-2 px-4 bg-gray-100 border-b">Book Title</th>
+                    <th class="py-2 px-4 bg-gray-100 border-b">Dealer</th>
+                    <th class="py-2 px-4 bg-gray-100 border-b">Author</th>
+                    <th class="py-2 px-4 bg-gray-100 border-b">Order Date</th>
+                    <th class="py-2 px-4 bg-gray-100 border-b">Quantity</th>
+                    <th class="py-2 px-4 bg-gray-100 border-b">Price Per Book</th>
+                    <th class="py-2 px-4 bg-gray-100 border-b">Total Price</th>
+                    <th class="py-2 px-4 bg-gray-100 border-b">Payment Type</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for purchase in purchases %}
+                <tr>
+                    <td class="p-2">{{ forloop.counter }}</td>
+                    <td class="py-2 px-4 border-b">{{ purchase.book_title.title }}</td>
+                    <td class="py-2 px-4 border-b">{{ purchase.dealers.Name }}</td>
+                    <td class="py-2 px-4 border-b">{{ purchase.author.author }}</td>
+                    <td class="py-2 px-4 border-b">{{ purchase.orderdate }}</td>
+                    <td class="py-2 px-4 border-b">{{ purchase.bookquantity }}</td>
+                    <td class="py-2 px-4 border-b">{{ purchase.perbookprice }}</td>
+                    <td class="py-2 px-4 border-b">{{ purchase.totalprice }}</td>
+                    <td class="py-2 px-4 border-b">{{ purchase.paymenttype }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

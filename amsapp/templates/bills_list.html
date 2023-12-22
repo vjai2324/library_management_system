@@ -1,0 +1,24 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="container mx-auto py-6">
+    <h1 class="text-2xl font-semibold mb-4">Bills List</h1>
+
+    {% if bills %}
+        <ul>
+            {% for bill in bills %}
+                <li class="mb-4 border p-4 rounded-lg shadow-md">
+                    <h2 class="text-lg font-semibold">Bill for {{ bill.book.title }}</h2>
+                    <p>User: {{ bill.user.username }}</p>
+                    <p>Issuance Date: {{ bill.issuance_date|date:"F d, Y" }}</p>
+                    <p>Due Date: {{ bill.due_date|date:"F d, Y" }}</p>
+                    <p>Charges: ${{ bill.charges }}</p>
+                    <a href="{% url 'generate_bill_pdf' bill.id %}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-full inline-block mt-2">Download Bill</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No bills found.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,90 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="bg-trueGray-100 py-10">
+    <div class="max-w-3xl mx-auto bg-white p-8 rounded shadow-lg">
+        <h1 class="text-2xl font-semibold mb-4">Create Book Transaction</h1>
+        <form method="post" class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+            {% csrf_token %}
+
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="book">Book</label>
+                <select name="book" id="book" class="form-select">
+                    <option value="" disabled selected>Select a book</option>
+                    <!-- Add options dynamically from your database -->
+                    {% for book in books %}
+                    <option value="{{ book.id }}">{{ book.title }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="author">Author</label>
+                <select name="author" id="author" class="form-select">
+                    <option value="" disabled selected>Select an author</option>
+                    <!-- Add options dynamically from your database -->
+                    {% for author in author %}
+                    <option value="{{ author.author.book_id }}">{{ author.author.author }}</option>
+                    {% endfor %}
+
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="bookquantity">Book Quantity</label>
+                <input type="number" name="bookquantity" id="bookquantity" class="form-input">
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="checkout">Checkout Date</label>
+                <input type="date" name="checkout" id="checkout" class="form-input">
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="checkin_date">Checkin Date</label>
+                <input type="date" name="checkin_date" id="checkin_date" class="form-input">
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="perdayprice">Per Day Price</label>
+                <input type="number" name="perdayprice" id="perdayprice" class="form-input">
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="total_days">Total Days</label>
+                <input type="number" name="total_days" id="total_days" class="form-input">
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="totalPrice">Total Price</label>
+                <input type="number" name="totalPrice" id="totalPrice" class="form-input">
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="grandtotalprice">Grand Total
+                    Price</label>
+                <input type="number" name="grandtotalprice" id="grandtotalprice" class="form-input">
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700 text-sm font-bold mb-2" for="paymenttype">Payment Type</label>
+                <select name="paymenttype" id="paymenttype" class="form-select">
+                    <option value="cash">Cash</option>
+                    <option value="net-banking">Net Banking</option>
+                    <option value="UPI">UPI</option>
+                    <option value="Card">Card</option>
+                </select>
+            </div>
+
+            <div class="mb-6">
+                <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                    Create Transaction
+                </button>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+{% endblock %}
+

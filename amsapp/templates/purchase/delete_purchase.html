@@ -1,0 +1,10 @@
+{% extends "index.html" %}
+
+{% block content %}
+    <h1>Delete Purchase</h1>
+    <p>Are you sure you want to delete this purchase: {{ purchase }}?</p>
+    <form method="post">
+        {% csrf_token %}
+        <input type="submit" value="Delete Purchase">
+    </form>
+{% endblock %}

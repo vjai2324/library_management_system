@@ -1,0 +1,34 @@
+<!-- list_bookstock.html -->
+
+{% extends "index.html" %}
+
+{% block content %}
+  <h2>Book Stock List</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Book Name</th>
+        <th>Per Book Price</th>
+        <th>Total Quantity</th>
+        <th>Last Purchase Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in bookstock_items %}
+        <tr>
+          <td>{{ item.id }}</td>
+          <td>{{ item.bookname.title }}</td>
+          <td>{{ item.perbookprise.price }}</td>
+          <td>{{ item.totalquantity }}</td>
+          <td>{{ item.lpurcdate }}</td>
+        </tr>
+      {% empty %}
+        <tr>
+          <td colspan="5">No book stock records available.</td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <a href="{% url 'create_bookstock' %}">Create New</a>
+{% endblock %}

@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth  focus:scroll-auto">
+{% load static %}
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="{% static 'images/almsfev.ico' %}">
+    {% block title %}
+    <title>ALM Library</title>
+    {% endblock %}
+    <link href="https://cdn.tailwindcss.com" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.1.1/flowbite.min.css" rel="stylesheet" />
+    <!-- Add this in the head of your HTML file -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/modal-js@0.3.0/dist/modal.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/modal-js@0.3.0/dist/modal.min.js"></script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Common styles for both light and dark modes */
+        /* body {
+            transition: background-color 0.3s, color 0.3s;
+        } */
+
+        body.light-mode {
+            background-color: #3C6E71;
+            color: #333;
+        }
+
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #333;
+            color: #fff;
+        }
+
+        /* Add dark mode styles for specific elements */
+        .dark-mode .sdbar-color {
+            background-color: #222;
+        }
+
+        .dark-mode .text-gray-700 {
+            color: #fff;
+        }
+
+        .dark-mode .hover:bg-zinc-800:hover {
+            background-color: #444;
+        }
+
+        .sdbar-color {
+            background-color: #284B63;
+        }
+
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            width: 20%;
+            /* Adjust this width as needed */
+            /* background-color: #C6E71; */
+            /* < !-- box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.2);
+            --> */
+            z-index: 1;
+            overflow-y: auto;
+            /* Enable scrolling if content exceeds sidebar height */
+            scroll-behavior: smooth;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .btn-9 {
+            border: none;
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .btn-9:after {
+            position: absolute;
+            content: " ";
+            z-index: -1;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1fd1f9;
+            background-image: linear-gradient(315deg, #1fd1f9 0%, #b621fe 74%);
+            transition: all 0.3s ease;
+        }
+
+        .btn-9:hover {
+            background: transparent;
+            box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, .5),
+                -4px -4px 6px 0 rgba(116, 125, 136, .2),
+                inset -4px -4px 6px 0 rgba(255, 255, 255, .5),
+                inset 4px 4px 6px 0 rgba(116, 125, 136, .3);
+            color: #c41e1e;
+        }
+
+        .btn-9:hover:after {
+            -webkit-transform: scale(2) rotate(180deg);
+            transform: scale(2) rotate(180deg);
+            box-shadow: 4px 4px 6px 0 rgba(255, 255, 255, .5),
+                -4px -4px 6px 0 rgba(116, 125, 136, .2),
+                inset -4px -4px 6px 0 rgba(255, 255, 255, .5),
+                inset 4px 4px 6px 0 rgba(116, 125, 136, .3);
+        }
+
+        .custom-btn {
+            width: 130px;
+            height: 40px;
+            color: #201b1b;
+            border-radius: 5px;
+            padding: 10px 25px;
+            font-family: 'Lato', sans-serif;
+            font-weight: 500;
+            background: transparent;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            display: inline-block;
+            box-shadow: inset 2px 2px 2px 0px rgba(255, 255, 255, .5),
+                7px 7px 20px 0px rgba(0, 0, 0, .1),
+                4px 4px 5px 0px rgba(0, 0, 0, .1);
+            outline: none;
+        }
+
+        button {
+            margin: 20px;
+        }
+
+        .clamp-3 {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .to-cyan-400 {
+            --tw-gradient-to: #22d3ee;
+        }
+
+        .via-cyan-500 {
+            --tw-gradient-stops: var(--tw-gradient-from), #06b6d4, var(--tw-gradient-to, rgba(6, 182, 212, 0));
+        }
+
+        #toast-success {
+            position: fixed;
+            z-index: 999;
+            left: 20%;
+            /* Adjust the z-index to ensure it appears above other elements */
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button {
+            padding: 10px;
+            margin: 2px;
+            border: 1px solid #ccc;
+            background-color: #f0f0f0;
+            color: #333;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+            background-color: #ddd;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current {
+            background-color: #007bff;
+            color: #fff;
+        }
+
+        .dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+            background-color: #0056b3;
+        }
+
+        /* Styles for the modal container */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            /* Ensure modal is on top of other elements */
+        }
+
+        /* Styles for the modal content */
+        .modal__content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            position: relative;
+        }
+
+        /* Styles for the close button */
+        .modal__close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            border: none;
+            background: none;
+            color: #333;
+            padding: 0;
+        }
+    </style>
+
+</head>
+
+<body>
+    <nav class="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
+        <div class="px-3 py-3 lg:px-5 lg:pl-3">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center justify-start rtl:justify-end">
+                    <button data-drawer-target="logo-sidebar" data-drawer-toggle="logo-sidebar"
+                        aria-controls="logo-sidebar" type="button"
+                        class="inline-flex items-center p-2 text-sm text-gray-500 rounded-lg sm:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600">
+                        <span class="sr-only">Open sidebar</span>
+                        <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path clip-rule="evenodd" fill-rule="evenodd"
+                                d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z">
+                            </path>
+                        </svg>
+                    </button>
+                    <a href="#" class="flex ms-2 md:me-24">
+                        <img src="{% static 'images/almsfev.png' %}" class="object-center w-12 h-12 me-3"
+                            alt="ALMS Logo" />
+                        <span
+                            class="self-center text-xl font-semibold sm:text-2xl whitespace-nowrap dark:text-white">ALMS</span>
+                    </a>
+                </div>
+                <div class="flex items-center">
+                    <div class="flex items-center ms-3">
+                        <div>
+                            <button type="button"
+                                class="flex text-sm bg-gray-800 rounded-full focus:ring-4 focus:ring-gray-300 dark:focus:ring-gray-600"
+                                aria-expanded="false" data-dropdown-toggle="dropdown-user">
+                                <span class="sr-only">Open user menu</span>
+                                {% if request.user.is_authenticated %}
+                                <img class="w-9 h-9 rounded-full"
+                                    src="{% if user.profile.gender == 'M' %}{% static 'images/man.svg' %}{% elif user.profile.gender == 'F'  %}{% static 'images/woman.png' %}{% else %}{% static 'images/alms--logo.svg' %}{% endif %}"
+                                    alt="{{ user.username }}">
+                                {% else %}
+                                <img class="w-10 h-10 rounded-full" src="{% static 'images/almsfev.png' %}"
+                                    alt="ALMS LOGO">
+
+                                {% endif %}
+                            </button>
+                        </div>
+                        <div class="z-50 hidden my-4 text-base list-none bg-white divide-y divide-gray-100 rounded shadow dark:bg-gray-700 dark:divide-gray-600"
+                            id="dropdown-user">
+                            {% if request.user.is_authenticated %}
+                            <div class="px-4 py-3" role="none">
+                                <p class="text-sm text-gray-900 dark:text-white" role="none">
+                                    {{ user.username }}
+                                </p>
+                                <p class="text-sm font-medium text-gray-900 truncate dark:text-gray-300" role="none">
+                                    {{ user.email }}
+                                </p>
+                            </div>
+                            {% endif %}
+                            <ul class="py-1" role="none">
+                                <li>
+                                    <a href="{% url 'index' %}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                        role="menuitem">Dashboard</a>
+                                </li>
+                                {% if request.user.is_authenticated %}
+
+                                {% if request.user.is_superuser %}
+                                <li><a href="{% url 'admin:index' %}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                        role="menuitem">Admin Page</a></li>
+                                {% else %}
+                                <li>
+                                    <a href="{% url 'settings' %}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                        role="menuitem">Settings</a>
+                                </li>
+                                {% endif %}
+
+                                <li>
+                                    <a href="{% url 'logout' %}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                        role="menuitem">Sign out</a>
+                                </li>
+                                {% else %}
+                                <li>
+                                    <a href="{% url 'login' %}"
+                                        class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-300 dark:hover:bg-gray-600 dark:hover:text-white"
+                                        role="menuitem">LogIn</a>
+                                </li>
+                                {% endif %}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <aside id="logo-sidebar"
+        class="fixed top-0 left-0 z-40 w-64 h-screen pt-20 transition-transform -translate-x-full bg-blue-500 border-r border-gray-200 sm:translate-x-0 dark:bg-gray-800 dark:border-gray-700"
+        aria-label="Sidebar">
+        <div class="h-full px-3 pb-4 overflow-y-auto bg-blue-500 dark:bg-gray-800">
+
+            <ul class="space-y-2 font-medium">
+                <li>
+                    <a href="{% url 'index' %}"
+                        class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-zinc-800  focus:shadow-outline">
+                        <span class="text-neutral-50">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                            </svg>
+
+                        </span>
+                        <span class="text-neutral-50">Dashboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'cart' %}"
+                        class="flex items-center space-x-3 text-neutral-50 p-2 rounded-md font-medium hover:bg-zinc-800  focus:shadow-outline">
+                        <span class="text-neutral-50">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 00-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 00-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm12.75 0a.75.75 0 11-1.5 0 .75.75 0 011.5 0z" />
+                            </svg>
+                        </span>
+                        <span>Cart</span>
+                    </a>
+                </li>
+
+
+                {% if request.user.is_superuser %}
+                <li>
+                    <a href="{% url 'user_details' %}"
+                        class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-zinc-800  focus:shadow-outline">
+                        <span class="text-neutral-50">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+                            </svg>
+
+                        </span>
+                        <span class="text-neutral-50">Users Details</span>
+                    </a>
+                </li>
+                <li class="relative">
+                    <a href="#" onclick="toggleSubMenu('stockSubMenu')"
+                        class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-gray-700 focus:shadow-outline">
+                        <span class="text-neutral-50">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 002.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 00-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 00.75-.75 2.25 2.25 0 00-.1-.664m-5.8 0A2.251 2.251 0 0113.5 2.25H15c1.012 0 1.867.668 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25zM6.75 12h.008v.008H6.75V12zm0 3h.008v.008H6.75V15zm0 3h.008v.008H6.75V18z" />
+                            </svg>
+                        </span>
+                        <span class="text-neutral-50">Stock Management</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"
+                            class="h-4 absolute right-2 top-2 text-neutral-50 transform transition-transform duration-300"
+                            id="stockSubMenuArrow">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </a>
+                    <ul class="hidden py-2 space-y-2" id="stockSubMenu">
+                        <!-- Add your dropdown menu items here -->
+
+                        <li>
+                            <a href="{% url 'book_list' %}"
+                                class="flex items-center w-full p-2 text-base font-normal text-neutral-50 transition duration-75 rounded-lg group hover:bg-zinc-800 dark:text-white dark:hover:bg-gray-700 pl-11">
+                                <span class="text-neutral-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" />
+                                    </svg>
+                                </span>
+                                <span class="text-neutral-50 ml-2">Books</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'dealer_list' %}"
+                                class="flex items-center w-full p-2 text-base font-normal text-neutral-50 transition duration-75 rounded-lg group hover:bg-zinc-800 dark:text-white dark:hover:bg-gray-700 pl-11">
+                                <span class="text-neutral-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z" />
+                                    </svg>
+                                </span>
+                                <span class="text-neutral-50 ml-2">Dealers</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'purchase_list' %}"
+                                class="flex items-center w-full p-2 text-base font-normal text-neutral-50 transition duration-75 rounded-lg group hover:bg-zinc-800 dark:text-white dark:hover:bg-gray-700 pl-11">
+                                <span class="text-neutral-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
+                                    </svg>
+                                </span>
+                                <span class="text-neutral-50 ml-2">Purchase</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href=""
+                                class="flex items-center w-full p-2 text-base font-normal text-neutral-50 transition duration-75 rounded-lg group hover:bg-zinc-800 dark:text-white dark:hover:bg-gray-700 pl-11">
+                                <span class="text-neutral-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                                    </svg>
+
+                                </span>
+                                <span class="text-neutral-50 ml-2">Purchase Return</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'book_transaction_list' %}"
+                                class="flex items-center w-full p-2 text-base font-normal text-neutral-50 transition duration-75 rounded-lg group hover:bg-zinc-800 dark:text-white dark:hover:bg-gray-700 pl-11">
+                                <span class="text-neutral-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                                    </svg>
+
+                                </span>
+                                <span class="text-neutral-50 ml-2">Book Transactions</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'book_stock' %}"
+                                class="flex items-center w-full p-2 text-base font-normal text-neutral-50 transition duration-75 rounded-lg group hover:bg-zinc-800 dark:text-white dark:hover:bg-gray-700 pl-11">
+                                <span class="text-neutral-50">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                                    </svg>
+
+                                </span>
+                                <span class="text-neutral-50 ml-2">Book Stocks</span>
+                            </a>
+                        </li>
+                        <!-- Add more submenu items as needed -->
+                    </ul>
+                </li>
+
+                {% endif %}
+                <li>
+                    <a href="{% url 'getdata' %}"
+                        class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-zinc-800  focus:shadow-outline">
+                        <span class="text-neutral-50">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" />
+                            </svg>
+
+                        </span>
+                        <span class="text-neutral-50">All Books Data</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'book_search' %}"
+                        class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-zinc-800 focus:shadow-outline">
+                        <span class="text-neutral-50">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 01-.659 1.591l-5.432 5.432a2.25 2.25 0 00-.659 1.591v2.927a2.25 2.25 0 01-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 00-.659-1.591L3.659 7.409A2.25 2.25 0 013 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0112 3z" />
+                            </svg>
+
+                        </span>
+                        <span class="text-neutral-50">Search by Filters</span>
+                    </a>
+                </li>
+
+
+
+
+                <li>
+                    <a href="{% url 'wishlist' %}"
+                        class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-zinc-800 focus:bg-gray-200 focus:shadow-outline">
+                        <span class=" text-neutral-50">
+                            <svg class="h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                            </svg>
+                        </span>
+                        <span class="text-neutral-50">My wishlist</span>
+                    </a>
+                </li>
+
+
+                {% if request.user.is_authenticated %}
+                <li>
+                    <a href="{% url 'logout' %}"
+                        class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-zinc-800  focus:shadow-outline">
+                        <svg class="h-6 w-6 text-white" width="24" height="24" viewBox="0 0 24 24" stroke-width="2"
+                            stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                            <path stroke="none" d="M0 0h24v24H0z" />
+                            <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2" />
+                            <path d="M7 12h14l-3 -3m0 6l3 -3" />
+                        </svg>
+                        <span class="text-neutral-50">Logout</span>
+                    </a>
+                </li>
+
+                {% else %}
+                <li>
+                    <a href="{% url 'register' %}"
+                        class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-zinc-800  focus:shadow-outline">
+                        <span class="text-neutral-50">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                                stroke="currentColor" class="w-6 h-6">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M19 7.5v3m0 0v3m0-3h3m-3 0h-3m-2.25-4.125a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zM4 19.235v-.11a6.375 6.375 0 0112.75 0v.109A12.318 12.318 0 0110.374 21c-2.331 0-4.512-.645-6.374-1.766z" />
+                            </svg>
+
+                        </span>
+                        <span class="text-neutral-50">Register</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'login' %}"
+                        class="flex items-center space-x-3 text-gray-700 p-2 rounded-md font-medium hover:bg-zinc-800  focus:shadow-outline">
+                        <span class="text-neutral-50">
+                            <svg class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                            </svg>
+                        </span>
+                        <span class="text-neutral-50">Login</span>
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </aside>
+
+
+    <div class="p-4 sm:ml-64">
+        <div class="p-4 border-2 border-gray-200 border-dashed rounded-lg dark:border-gray-700 mt-14">
+            <div class="bg-white p-4 mx-4 ">
+                {% if messages %}
+                <div class="mt-4">
+                    {% for message in messages %}
+                    <!-- Component: Dismissible Success Alert -->
+                    <div class="alert-box flex items-center w-full gap-4 px-4 py-3 text-sm border rounded border-emerald-100 bg-emerald-50 text-emerald-500"
+                        role="alert">
+                        <!-- Text -->
+                        <p class="flex-1">{{ message }}</p>
+                        <!-- Close button -->
+                        <button aria-label="Close" id="closeButton{{ loop.index }}"
+                            class="inline-flex items-center justify-center h-8 gap-2 px-4 text-xs font-medium tracking-wide transition duration-300 rounded-full focus-visible:outline-none justify-self-center whitespace-nowrap text-emerald-500 hover:bg-emerald-100 hover:text-emerald-600 focus:bg-emerald-200 focus:text-emerald-700 disabled:cursor-not-allowed disabled:text-emerald-300 disabled:shadow-none disabled:hover:bg-transparent">
+                            <span class="relative only:-mx-4">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" stroke-width="1.5" role="graphics-symbol"
+                                    aria-labelledby="title-11 desc-11">
+                                    <title id="title-11">Icon title</title>
+                                    <desc id="desc-11">
+                                        A more detailed description of the icon
+                                    </desc>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </span>
+                        </button>
+                    </div>
+                    <!-- End Dismissible Success Alert -->
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% block content %}
+
+
+
+            <div class="text-xl flex justify-center items-top ">
+                {% if request.user.is_superuser %}
+                <div class="flex gap-8">
+
+                    <div class="">
+                        <a href="{% url 'review_requests' %}"
+                            class="bg-cyan-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-full inline-block">
+                            Review Requests
+                        </a>
+                    </div>
+                    <div>
+                        <a href="{% url 'review_approved_requests' %}"
+                            class="bg-red-400 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded-full inline-block">
+                            Approved Requests
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+                {% if request.user.is_authenticated %}
+
+                <div class="flex mx-10">
+                    <div class="">
+                        <a href="{% url 'bills_list' %}"
+                            class="bg-lime-600 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded-full inline-block">
+                            Bill List
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
+
+
+
+            </div>
+
+            <div>
+                {% if popular_books %}
+                <h2 class="text-2xl font-semibold mb-4 p-2">Most Popular Books</h2>
+
+                <div class="flex justify-center">
+
+                    <!-- Using windui -->
+                    <!-- Component: Card Carousel -->
+                    <div class="relative w-4/5 overflow-hidden bg-white rounded shadow-xl shadow-slate-200 glide-06">
+                        <!-- Slides -->
+                        <div class="overflow-hidden" data-glide-el="track">
+                            <ul
+                                class="relative w-full overflow-hidden p-0 whitespace-no-wrap flex flex-no-wrap [backface-visibility: hidden] [transform-style: preserve-3d] [touch-action: pan-Y] [will-change: transform] ">
+                                {% for book in popular_books %}
+                                <li class="flex justify-center items-center shadow-lg"><img src="{{ book.cover_image }}"
+                                        class="w-70 h-64 object-cover " /></li>
+
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        <!-- Controls -->
+                        <div class="absolute left-0 flex items-center justify-between w-full h-0 px-4 top-1/2 "
+                            data-glide-el="controls">
+                            <button
+                                class="inline-flex items-center justify-center w-8 h-8 transition duration-300 border rounded-full lg:w-12 lg:h-12 text-slate-700 border-slate-700 hover:text-slate-900 hover:border-slate-900 focus-visible:outline-none bg-white/20"
+                                data-glide-dir="<" aria-label="prev slide">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <title>prev slide</title>
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M6.75 15.75L3 12m0 0l3.75-3.75M3 12h18" />
+                                </svg>
+                            </button>
+                            <button
+                                class="inline-flex items-center justify-center w-8 h-8 transition duration-300 border rounded-full lg:w-12 lg:h-12 text-slate-700 border-slate-700 hover:text-slate-900 hover:border-slate-900 focus-visible:outline-none bg-white/20"
+                                data-glide-dir=">" aria-label="next slide">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                                    <title>next slide</title>
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
+                                </svg>
+                            </button>
+                        </div>
+                        <!-- Indicators -->
+                        <div class="absolute bottom-0 flex items-center justify-center w-full gap-2"
+                            data-glide-el="controls[nav]">
+                            {% for book in popular_books %}
+                            <button class="p-4 group" data-glide-dir="={{ forloop.counter0 }}"
+                                aria-label="goto slide 1"><span
+                                    class="block w-2 h-2 transition-colors duration-300 rounded-full ring-1 ring-slate-700 bg-white/20 focus:outline-none"></span></button>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- End Card Carousel -->
+                </div>
+                {% endif %}
+            </div>
+            {% endblock %}
+        </div>
+    </div>
+    <script>
+
+
+        // JavaScript code to handle close button click
+        const closeButtons = document.querySelectorAll('[id^="closeButton"]');
+        closeButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Find the corresponding alert and hide it
+                const alert = button.closest('.alert-box');
+                alert.style.display = 'none';
+            });
+        });
+
+        // JavaScript function to toggle dark mode
+        function toggleDarkMode() {
+            const body = document.body;
+            body.classList.toggle('dark-mode');
+
+            // Check if dark mode is enabled and store the preference in localStorage
+            const isDarkModeEnabled = body.classList.contains('dark-mode');
+            localStorage.setItem('dark-mode-preference', isDarkModeEnabled);
+        }
+
+        // Check for dark mode preference in localStorage on page load
+        const storedDarkModePreference = localStorage.getItem('dark-mode-preference');
+        if (storedDarkModePreference === 'true') {
+            document.body.classList.add('dark-mode');
+        }
+
+
+        function toggleSubMenu(subMenuId) {
+            const subMenu = document.getElementById(subMenuId);
+            const subMenuArrow = document.getElementById(subMenuId + 'Arrow');
+            if (subMenu.style.display === 'block') {
+                subMenu.style.display = 'none';
+                subMenuArrow.style.transform = 'rotate(0deg)';
+            } else {
+                subMenu.style.display = 'block';
+                subMenuArrow.style.transform = 'rotate(180deg)';
+            }
+        }
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.1.1/flowbite.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/dataTables.tailwindcss.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+    <script>$(document).ready(function () {
+
+            $('#booksTable').DataTable({
+                "dom": '<"dt-buttons"Bf><"clear">lirtp',
+                "paging": true,
+                "autoWidth": true,
+                "buttons": [
+                    'colvis',
+                    'copyHtml5',
+                    'csvHtml5',
+                    'excelHtml5',
+                    'pdfHtml5',
+                    'print'
+                ]
+            });
+        });</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Glide.js/3.0.2/glide.js"></script>
+
+    <script>
+        var glide06 = new Glide('.glide-06', {
+            type: 'carousel',
+            focusAt: 'center',
+            perView: 4,
+            autoplay: 3000,
+            animationDuration: 700,
+            gap: 20,
+            classes: {
+                activeNav: '[&>*]:bg-slate-700',
+            },
+            breakpoints: {
+                1024: {
+                    perView: 2
+                },
+                640: {
+                    perView: 1
+                }
+            },
+        });
+
+        glide06.mount();
+
+    </script>
+
+
+
+
+
+
+</body>
+
+</html>

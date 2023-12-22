@@ -1,0 +1,59 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="bg-gray-100 py-8">
+    <div class="w-full max-w-md bg-white mx-auto rounded-md p-6 shadow-md">
+        <h1 class="text-2xl font-semibold text-gray-800 mb-4">Settings</h1>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <!-- User Details -->
+            <div class="mb-6">
+                <label for="username" class="text-gray-600 font-semibold mb-2 block">Username</label>
+                <input id="username" type="text" name="username" value="{{ request.user.username }}"
+                    class="w-full h-10 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                    placeholder="Username" required />
+            </div>
+
+            <div class="mb-6">
+                <label for="first_name" class="text-gray-600 font-semibold mb-2 block">First Name</label>
+                <input id="first_name" type="text" name="first_name" value="{{ request.user.first_name }}"
+                    class="w-full h-10 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                    placeholder="First Name" required />
+            </div>
+
+            <div class="mb-6">
+                <label for="last_name" class="text-gray-600 font-semibold mb-2 block">Last Name</label>
+                <input id="last_name" type="text" name="last_name" value="{{ request.user.last_name }}"
+                    class="w-full h-10 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                    placeholder="Last Name" required />
+            </div>
+
+            <div class="mb-6">
+                <label for="email" class="text-gray-600 font-semibold mb-2 block">Email</label>
+                <input id="email" type="email" name="email" value="{{ request.user.email }}"
+                    class="w-full h-10 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                    placeholder="Email" required />
+            </div>
+
+            <!-- Profile Details -->
+            <div class="mb-6">
+                <label for="mobile_number" class="text-gray-600 font-semibold mb-2 block">Mobile Number</label>
+                <input id="mobile_number" type="text" name="mobile_number" value="{{ request.user.profile.mobile_number }}"
+                    class="w-full h-10 px-3 py-2 border rounded-lg focus:outline-none focus:border-blue-500"
+                    placeholder="Mobile Number" required />
+            </div>
+
+            
+
+            <!-- Update Button -->
+            <div class="flex items-center justify-between">
+                <button type="submit"
+                    class="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 focus:outline-none">
+                    Update
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends "index.html" %}
+
+{% block content %}
+<div class="bg-trueGray-100 py-10">
+    <div class="max-w-3xl mx-auto bg-white p-8 rounded shadow-lg">
+        <h1 class="text-2xl font-semibold mb-4">Book Transactions</h1>
+        <div class="mb-4">
+            <a href="{% url 'create_book_transaction' %}"
+                class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Create Transaction</a>
+        </div>
+        <table class="min-w-full border border-gray-300">
+            <thead>
+                <tr>
+                    <th class="py-2 px-4 bg-gray-100 border-b">Book</th>
+                    <th class="py-2 px-4 bg-gray-100 border-b">Author</th>
+                    <th class="py-2 px-4 bg-gray-100 border-b">User</th>
+                    <th class="py-2 px-4 bg-gray-100 border-b">Checkout Date</th>
+                    <th class="py-2 px-4 bg-gray-100 border-b">Checkin Date</th>
+                    <th class="py-2 px-4 bg-gray-100 border-b">Book Quantity</th>
+                    <th class="py-2 px-4 bg-gray-100 border-b">Total Price</th>
+                    <th class="py-2 px-4 bg-gray-100 border-b">Payment Type</th>
+                    <th class="py-2 px-4 bg-gray-100 border-b">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaction in transactions %}
+                <tr>
+                    <td class="py-2 px-4 border-b">{{ transaction.book.book.title }}</td>
+                    <td class="py-2 px-4 border-b">{{ transaction.author.author }}</td>
+                    <td class="py-2 px-4 border-b">{{ transaction.username }}</td>
+                    <td class="py-2 px-4 border-b">{{ transaction.checkout|date }}</td>
+                    <td class="py-2 px-4 border-b">{{ transaction.checkin_date|default:"Not Checked In" }}</td>
+                    <td class="py-2 px-4 border-b">{{ transaction.bookquantity }}</td>
+                    <td class="py-2 px-4 border-b">{{ transaction.totalPrice }}</td>
+                    <td class="py-2 px-4 border-b">{{ transaction.get_paymenttype_display }}</td>
+                    <td>
+                        <button class="edit-button bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                            data-transaction-id="{{ transaction.tr_id }}">Edit</button>
+                    </td>
+                </tr>
+                <tr class="edit-row" style="display: none;">
+                    <td colspan="9">
+                        <form method="post" id="edit-form-{{ transaction.tr_id }}" class="transaction-form">
+                            {% csrf_token %}
+                            <input type="text" name="book_title" value="{{ transaction.book.book.title }}">
+                            <input type="text" name="author" value="{{ transaction.author.author }}">
+                            <!-- Add input fields for other fields to be edited -->
+                            <button class="update-button bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+                                data-transaction-id="{{ transaction.tr_id }}">Update</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const editButtons = document.querySelectorAll('.edit-button');
+
+        editButtons.forEach((editButton) => {
+            editButton.addEventListener('click', () => {
+                const transactionId = editButton.dataset.transactionId;
+                const editForm = document.querySelector(`#edit-form-${transactionId}`);
+                const editRow = editButton.parentElement.parentElement.nextElementSibling;
+
+                // Toggle the visibility of the edit form within the same row
+                if (editForm.style.display === 'none') {
+                    editForm.style.display = 'block';
+                    editRow.style.display = 'table-row';
+                } else {
+                    editForm.style.display = 'none';
+                    editRow.style.display = 'none'; 
+                }
+            });
+        });
+
+        const updateButtons = document.querySelectorAll('.update-button');
+        updateButtons.forEach((updateButton) => {
+            updateButton.addEventListener('click', () => {
+                const transactionId = updateButton.dataset.transactionId;
+                const editForm = document.querySelector(`#edit-form-${transactionId}`);
+                // Handle the update and AJAX request here
+                // Send an AJAX request to update the data using the form data
+                fetch(`/update_book_transaction/${transactionId}/`, {
+                    method: 'POST',
+                    body: new FormData(editForm),
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken') // Ensure you have a function to get the CSRF token
+                    }
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        // Handle the response, update the data or display a message
+                        // You can also hide the edit form if needed
+                    })
+                    .catch((error) => {
+                        // Handle errors
+                        console.error(error);
+                    });
+            });
+        });
+    });
+
+</script>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends "index.html" %}
+{% block content %}
+    <h2 class="text-2xl font-bold mb-4">Books List</h2>
+  <table class="display" id="booksTable" style="width: 90%">
+        <thead>
+            <tr>
+                <th class="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Book ID</th>
+                <th class="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                <th class="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Subtitle</th>
+                <th class="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Author</th>
+                <th class="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Category</th>
+                <th class="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Publication Date</th>
+                <th class="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Description</th>
+                <th class="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">ISBN Number</th>
+                <th class="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Number of Pages</th>
+                <th class="px-6 py-3 bg-gray-100 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">Language</th>
+                <!-- Add more columns as needed -->
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            {% for book in books %}
+                <tr>
+                    <td class="px-6 py-4 whitespace-no-wrap">{{ book.book_id }}</td>
+                    <td class="px-6 py-4 whitespace-no-wrap">{{ book.title }}</td>
+                    <td class="px-6 py-4 whitespace-no-wrap">{{ book.subtitle }}</td>
+                    <td class="px-6 py-4 whitespace-no-wrap">{{ book.author }}</td>
+                    <td class="px-6 py-4 whitespace-no-wrap">{{ book.category }}</td>
+                    <td class="px-6 py-4 whitespace-no-wrap">{{ book.pub_date }}</td>
+                    <td class="px-6 py-4 whitespace-no-wrap">{{ book.description }}</td>
+                    <td class="px-6 py-4 whitespace-no-wrap">{{ book.isbn_no }}</td>
+                    <td class="px-6 py-4 whitespace-no-wrap">{{ book.pages }}</td>
+                    <td class="px-6 py-4 whitespace-no-wrap">{{ book.language }}</td>
+                    <!-- Add more columns as needed -->
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "index.html" %}
+
+{% block content %}
+
+<h1>Delete Dealer</h1>
+<p>Are you sure you want to delete "{{ dealer.Name }}"?</p>
+<form method="post">
+    {% csrf_token %}
+    <input type="submit" value="Delete Dealer">
+</form>
+
+{% endblock %}
